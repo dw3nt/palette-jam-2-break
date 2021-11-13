@@ -231,6 +231,10 @@ colliderPath = NodePath("../../CrouchCollision")
 script = ExtResource( 10 )
 colliderPath = NodePath("../../StandCollision")
 
+[node name="Timer" type="Timer" parent="PlayerStateMachine/WindUp"]
+wait_time = 1.5
+one_shot = true
+
 [node name="Throw" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 11 )
 colliderPath = NodePath("../../StandCollision")

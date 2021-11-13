@@ -3,11 +3,12 @@ extends PlayerState
 onready var timer = $Timer as Timer
 
 
-func enter_state(_params : Dictionary = {}) -> void:
+func enter_state(params : Dictionary = {}) -> void:
 	fsm.anim.play("throw")
 	timer.start()
 	
-	fsm.get_parent().heldItem.throw(2.0, 1.5)
+	print(params.scale)
+	fsm.get_parent().heldItem.throw(params.scale, params.scale)
 	fsm.get_parent().heldItem = null
 	
 	
