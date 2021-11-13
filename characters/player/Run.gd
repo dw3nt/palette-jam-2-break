@@ -16,7 +16,6 @@ func input(event) -> void:
 func physics_process(delta : float) -> void:
 	var xInput = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if xInput == 0:
-		print('run to idle')
 		fsm.change_state("Idle")
 		return
 		
