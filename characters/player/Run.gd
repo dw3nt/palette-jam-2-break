@@ -20,3 +20,4 @@ func physics_process(delta : float) -> void:
 		return
 		
 	fsm.velocity.x = xInput * MOVE_SPEED
+	fsm.get_parent().turnAround()

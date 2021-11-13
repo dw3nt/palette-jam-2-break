@@ -1,6 +1,8 @@
 extends BaseState
 class_name PlayerState
 
+const HELD_ITEM_POS := Vector2(-3, -8)
+
 const FRICTION := 0.4
 const AIR_FRICTION := 0.05
 const MOVE_SPEED := 75.0

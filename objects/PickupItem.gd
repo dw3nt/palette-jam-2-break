@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name PickUpItem
 
 const GRAVITY := 6.0
 const FRICTION := 0.2
@@ -32,9 +33,9 @@ func _physics_process(delta : float) -> void:
 		velocity.x = 0.0
 	
 	
-func throw() -> void:
+func throw(throwForwardScale : float = 1.0, throwUpScale : float = 1.0) -> void:
 	var throwDir = -1 if sprite.flip_h else 1
-	velocity = Vector2(THROW_SPEED_FORWARD * throwDir, THROW_SPEED_UP)
+	velocity = Vector2(THROW_SPEED_FORWARD * throwDir * throwForwardScale, THROW_SPEED_UP * throwUpScale)
 	call_deferred("set_physics_process", true)
 	enableDetectDelay.start()
 

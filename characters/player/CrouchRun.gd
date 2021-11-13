@@ -17,3 +17,4 @@ func physics_process(delta : float) -> void:
 		return
 		
 	fsm.velocity.x = xInput * CROUCH_SPEED
+	fsm.get_parent().turnAround()

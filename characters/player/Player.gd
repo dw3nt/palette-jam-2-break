@@ -37,9 +37,6 @@ func _physics_process(delta) -> void:
 	stateWrap.state.physics_process(delta)
 	move_and_slide(stateWrap.velocity, Vector2.UP)
 	stateWrap.isOnFloor = is_on_floor()
-	
-	if stateWrap.velocity.x != 0:
-		turnAround()
 		
 		
 func turnAround() -> void:
@@ -80,6 +77,7 @@ func pickUpItem() -> void:
 		heldItem.highlight(false)
 		heldItem.disableDetect()
 		closestItem = null
+		turnAround()
 		
 	
 func dropItem() -> void:
