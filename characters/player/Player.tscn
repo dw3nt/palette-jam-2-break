@@ -164,6 +164,9 @@ tracks/0/keys = {
 collision_mask = 16
 script = ExtResource( 8 )
 
+[node name="HeldItemPosition" type="Position2D" parent="."]
+position = Vector2( -3, -8 )
+
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -9 )
 texture = ExtResource( 1 )

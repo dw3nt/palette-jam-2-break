@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/images/key.png" type="Texture" id=1]
+[ext_resource path="res://objects/PickupItem.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 4 )
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 8.0
+
+[node name="PickUpItem" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 16
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="PickUpDetect" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpDetect"]
+shape = SubResource( 1 )
+
+[node name="EnableDetectDelay" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[connection signal="body_entered" from="PickUpDetect" to="." method="_on_PickUpDetect_body_entered"]
+[connection signal="body_exited" from="PickUpDetect" to="." method="_on_PickUpDetect_body_exited"]
+[connection signal="timeout" from="EnableDetectDelay" to="." method="_on_EnableDetectDelay_timeout"]
