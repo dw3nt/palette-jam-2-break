@@ -9,6 +9,9 @@ func input(event) -> void:
 	if event.is_action_released("crouch"):
 		fsm.change_state("Run")
 		
+	if event.is_action_pressed("throw"):
+		fsm.change_state("WindUp", { "isCrouched" : true })
+		
 		
 func physics_process(delta : float) -> void:
 	if !fsm.isOnFloor:

@@ -2,19 +2,26 @@ extends PlayerState
 
 const WIND_UP_ITEM_POS := Vector2(-8, -6)
 
+var throwAnim : String = "throw"
+
 onready var timer = $Timer as Timer
 
 
-func enter_state(_params : Dictionary = {}) -> void:
-	timer.start()
-	fsm.anim.play("wind_up")
+func enter_state(params : Dictionary = {}) -> void:
+	if params.keys().has("isCrouched") && params.isCrouched:
+		fsm.anim.play("crouch_wind_up")
+		throwAnim = "crouch_throw"
+	else:
+		fsm.anim.play("wind_up")
+		throwAnim = "throw"
 	
+	timer.start()
 	fsm.heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1
 	
 	
 func input(event) -> void:
 	if event.is_action_released("throw"):
-		fsm.change_state("Throw", { "scale" : calculateThrowScale()})
+		fsm.change_state("Throw", { "scale" : calculateThrowScale(), "throwAnim" : throwAnim})
 		
 	if event.is_action_pressed("move_right"):
 		handleFacing(1)
@@ -23,6 +30,13 @@ func input(event) -> void:
 	if event.is_action_pressed("move_left"):
 		handleFacing(-1)
 		faceWindUp()
+		
+	if event.is_action_pressed("crouch"):
+		fsm.anim.play("crouch_wind_up")
+		throwAnim = "crouch_throw"
+	elif event.is_action_released("crouch"):
+		fsm.anim.play("wind_up")
+		throwAnim = "throw"
 		
 		
 func physics_process(delta : float) -> void:

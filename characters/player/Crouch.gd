@@ -12,6 +12,9 @@ func input(event) -> void:
 	if event.is_action_pressed("move_right") || event.is_action_pressed("move_left"):
 		fsm.change_state("CrouchRun")
 		
+	if event.is_action_pressed("throw"):
+		fsm.change_state("WindUp", { "isCrouched" : true })
+		
 		
 func physics_process(delta : float) -> void:
 	if fsm.velocity.x != 0:

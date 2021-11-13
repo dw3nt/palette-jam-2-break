@@ -1,10 +1,13 @@
 extends PlayerState
 
+var throwAnim = "throw"
+
 onready var timer = $Timer as Timer
 
 
 func enter_state(params : Dictionary = {}) -> void:
-	fsm.anim.play("throw")
+	throwAnim = params.throwAnim
+	fsm.anim.play(throwAnim)
 	timer.start()
 	
 	fsm.get_parent().heldItem.throw(params.scale, params.scale)
@@ -19,4 +22,7 @@ func physics_process(delta : float) -> void:
 
 
 func _on_Timer_timeout() -> void:
-	fsm.change_state("Idle")
+	if throwAnim == "crouch_throw" && Input.is_action_pressed("crouch"):
+		fsm.change_state("Crouch")
+	else:
+		fsm.change_state("Idle")
