@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/images/characters/player.png" type="Texture" id=1]
 [ext_resource path="res://characters/player/PlayerStateMachine.gd" type="Script" id=2]
@@ -14,6 +14,9 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 3, 7 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 4, 5 )
 
 [sub_resource type="Animation" id=2]
 length = 0.001
@@ -174,9 +177,13 @@ position = Vector2( 0, -9 )
 texture = ExtResource( 1 )
 hframes = 21
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="StandCollision" type="CollisionShape2D" parent="." groups=["player_collision"]]
 position = Vector2( 0, -7 )
 shape = SubResource( 1 )
+
+[node name="CrouchCollision" type="CollisionShape2D" parent="." groups=["player_collision"]]
+position = Vector2( 0, -5 )
+shape = SubResource( 11 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
@@ -198,27 +205,35 @@ heldItemPositionPath = NodePath("../HeldItemPosition")
 
 [node name="Idle" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 3 )
+colliderPath = NodePath("../../StandCollision")
 
 [node name="Run" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 4 )
+colliderPath = NodePath("../../StandCollision")
 
 [node name="Jump" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 5 )
+colliderPath = NodePath("../../StandCollision")
 
 [node name="Fall" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 9 )
+colliderPath = NodePath("../../StandCollision")
 
 [node name="Crouch" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 6 )
+colliderPath = NodePath("../../CrouchCollision")
 
 [node name="CrouchRun" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 7 )
+colliderPath = NodePath("../../CrouchCollision")
 
 [node name="WindUp" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 10 )
+colliderPath = NodePath("../../StandCollision")
 
 [node name="Throw" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 11 )
+colliderPath = NodePath("../../StandCollision")
 
 [node name="Timer" type="Timer" parent="PlayerStateMachine/Throw"]
 wait_time = 0.25

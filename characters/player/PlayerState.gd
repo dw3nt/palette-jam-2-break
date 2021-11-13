@@ -12,4 +12,16 @@ const AIR_MOVE_SPEED := 60.0
 const GRAVITY := 10.0
 const LERP_THRESHOLD := 0.01
 
+export(NodePath) var colliderPath
+
 var fsm : PlayerStateMachine
+
+
+onready var collider = get_node(colliderPath)
+
+
+func handleFacing(dir : int) -> void:
+	var oldVelocityX = fsm.velocity.x
+	fsm.velocity.x = dir
+	fsm.get_parent().turnAround()
+	fsm.velocity.x = oldVelocityX

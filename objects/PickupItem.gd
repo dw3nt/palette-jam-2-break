@@ -6,7 +6,7 @@ const FRICTION := 0.2
 const AIR_FRICTION := 0.05
 const THROW_SPEED_UP := -80.0
 const THROW_SPEED_FORWARD := 100.0
-const MOVE_THRESHOLD := 0.01
+const MOVE_THRESHOLD := 0.05
 
 var velocity = Vector2.ZERO
 

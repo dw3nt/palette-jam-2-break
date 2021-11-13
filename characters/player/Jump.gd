@@ -18,3 +18,6 @@ func physics_process(delta : float) -> void:
 		fsm.velocity.x = xInput * AIR_MOVE_SPEED
 		
 	fsm.velocity.y += GRAVITY
+	
+	if xInput != 0:
+		fsm.get_parent().turnAround()

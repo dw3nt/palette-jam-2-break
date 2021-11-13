@@ -15,10 +15,13 @@ func physics_process(delta : float) -> void:
 		return
 		
 	fsm.velocity.y += GRAVITY
-	if abs(fsm.velocity.x) > AIR_MOVE_SPEED:
+	if abs(fsm.velocity.x) > AIR_MOVE_SPEED && sign(xInput) == sign(fsm.velocity.x):
 		fsm.velocity.x = lerp(fsm.velocity.x, AIR_MOVE_SPEED * sign(fsm.velocity.x), AIR_FRICTION)
 	else:
-		fsm.velocity.x = (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * AIR_MOVE_SPEED
+		fsm.velocity.x = xInput * AIR_MOVE_SPEED
+		
+	if xInput != 0:
+		fsm.get_parent().turnAround()
 	
 	
 func exit_state() -> void:

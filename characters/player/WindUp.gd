@@ -16,9 +16,11 @@ func input(event) -> void:
 		
 	if event.is_action_pressed("move_right"):
 		handleFacing(1)
+		faceWindUp()
 		
 	if event.is_action_pressed("move_left"):
 		handleFacing(-1)
+		faceWindUp()
 		
 		
 func physics_process(delta : float) -> void:
@@ -28,11 +30,6 @@ func physics_process(delta : float) -> void:
 			fsm.velocity.x = 0
 			
 			
-func handleFacing(dir : int) -> void:
-	var oldVelocityX = fsm.velocity.x
-	fsm.velocity.x = dir
-	fsm.get_parent().turnAround()
-	fsm.velocity.x = oldVelocityX
-	
+func faceWindUp() -> void:
 	fsm.heldItemPos.position = WIND_UP_ITEM_POS
 	fsm.heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1

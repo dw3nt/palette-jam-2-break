@@ -14,6 +14,10 @@ func input(event) -> void:
 	
 	
 func physics_process(delta : float) -> void:
+	if !fsm.isOnFloor:
+		fsm.change_state("Fall")
+		return
+	
 	var xInput = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if xInput == 0:
 		fsm.change_state("Idle")
