@@ -13,11 +13,12 @@ const GRAVITY := 10.0
 const LERP_THRESHOLD := 0.01
 
 export(NodePath) var colliderPath
+export(NodePath) var heldItemPosPath
 
 var fsm : PlayerStateMachine
 
-
 onready var collider = get_node(colliderPath)
+onready var heldItemPos = get_node(heldItemPosPath)
 
 
 func handleFacing(dir : int) -> void:

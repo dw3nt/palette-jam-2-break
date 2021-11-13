@@ -11,6 +11,9 @@ func input(event) -> void:
 		
 	if event.is_action_pressed("jump"):
 		fsm.change_state("Jump")
+		
+	if fsm.getHeldItem() && event.is_action_pressed("throw"):
+		fsm.change_state("WindUp")
 	
 	
 func physics_process(delta : float) -> void:

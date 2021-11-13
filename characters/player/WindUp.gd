@@ -9,7 +9,6 @@ func enter_state(_params : Dictionary = {}) -> void:
 	timer.start()
 	fsm.anim.play("wind_up")
 	
-	fsm.heldItemPos.position = WIND_UP_ITEM_POS
 	fsm.heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1
 	
 	
@@ -39,4 +38,4 @@ func faceWindUp() -> void:
 	
 	
 func calculateThrowScale() -> float:
-	return 1.0 + timer.wait_time - timer.time_left
+	return 1.0 + (timer.wait_time - timer.time_left)

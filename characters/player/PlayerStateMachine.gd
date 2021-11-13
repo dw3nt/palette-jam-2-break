@@ -17,6 +17,8 @@ func ready() -> void:
 func change_state(newStateName : String, params : Dictionary = {}) -> void:
 	.change_state(newStateName, params)
 	
+	get_parent().flipHeldItemPos()
+	
 	for collider in get_tree().get_nodes_in_group("player_collision"):
 		collider.disabled = true
 		

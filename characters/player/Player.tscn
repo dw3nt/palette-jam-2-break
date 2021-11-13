@@ -169,8 +169,14 @@ tracks/0/keys = {
 collision_mask = 16
 script = ExtResource( 8 )
 
-[node name="HeldItemPosition" type="Position2D" parent="."]
+[node name="StandHeldItem" type="Position2D" parent="." groups=["player_held_item_pos"]]
 position = Vector2( -3, -8 )
+
+[node name="CrouchHeldItem" type="Position2D" parent="." groups=["player_held_item_pos"]]
+position = Vector2( -3, -5 )
+
+[node name="WindUpHeldItem" type="Position2D" parent="." groups=["player_held_item_pos"]]
+position = Vector2( -8, -6 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -9 )
@@ -201,35 +207,42 @@ anims/wind_up = SubResource( 9 )
 script = ExtResource( 2 )
 animationPlayerPath = NodePath("../AnimationPlayer")
 spritePath = NodePath("../Sprite")
-heldItemPositionPath = NodePath("../HeldItemPosition")
+heldItemPositionPath = NodePath("../StandHeldItem")
 
 [node name="Idle" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 3 )
 colliderPath = NodePath("../../StandCollision")
+heldItemPosPath = NodePath("../../StandHeldItem")
 
 [node name="Run" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 4 )
 colliderPath = NodePath("../../StandCollision")
+heldItemPosPath = NodePath("../../StandHeldItem")
 
 [node name="Jump" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 5 )
 colliderPath = NodePath("../../StandCollision")
+heldItemPosPath = NodePath("../../StandHeldItem")
 
 [node name="Fall" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 9 )
 colliderPath = NodePath("../../StandCollision")
+heldItemPosPath = NodePath("../../StandHeldItem")
 
 [node name="Crouch" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 6 )
 colliderPath = NodePath("../../CrouchCollision")
+heldItemPosPath = NodePath("../../CrouchHeldItem")
 
 [node name="CrouchRun" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 7 )
 colliderPath = NodePath("../../CrouchCollision")
+heldItemPosPath = NodePath("../../CrouchHeldItem")
 
 [node name="WindUp" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 10 )
 colliderPath = NodePath("../../StandCollision")
+heldItemPosPath = NodePath("../../WindUpHeldItem")
 
 [node name="Timer" type="Timer" parent="PlayerStateMachine/WindUp"]
 wait_time = 1.5
@@ -238,6 +251,7 @@ one_shot = true
 [node name="Throw" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 11 )
 colliderPath = NodePath("../../StandCollision")
+heldItemPosPath = NodePath("../../WindUpHeldItem")
 
 [node name="Timer" type="Timer" parent="PlayerStateMachine/Throw"]
 wait_time = 0.25

@@ -62,7 +62,7 @@ func _on_PickUpDetect_body_entered(body : Player) -> void:
 func _on_PickUpDetect_body_exited(body : Player) -> void:
 	if !body:
 		return
-		
+	
 	body.removePickUpItem(self)
 	highlight(false)
 

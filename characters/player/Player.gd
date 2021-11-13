@@ -5,7 +5,6 @@ var pickupItems : Dictionary = {}
 var closestItem = null
 var heldItem = null
 
-onready var heldItemPos = $HeldItemPosition as Position2D
 onready var sprite = $Sprite as Sprite
 onready var stateWrap = $PlayerStateMachine as PlayerStateMachine
 
@@ -28,7 +27,7 @@ func _unhandled_input(event) -> void:
 	
 func _process(delta) -> void:
 	if heldItem:
-		heldItem.global_position = heldItemPos.global_position
+		heldItem.global_position = stateWrap.state.heldItemPos.global_position
 	
 	stateWrap.state.process(delta)
 
@@ -41,9 +40,18 @@ func _physics_process(delta) -> void:
 		
 func turnAround() -> void:
 	sprite.flip_h = stateWrap.velocity.x < 0
-	heldItemPos.position.x = -3 if stateWrap.velocity.x > 0 else 3
+	flipHeldItemPos()
+	flipHeldItem()
+	
+	
+func flipHeldItemPos() -> void:
+	if (sprite.flip_h && stateWrap.state.heldItemPos.position.x < 0) || (!sprite.flip_h && stateWrap.state.heldItemPos.position.x > 0):
+		stateWrap.state.heldItemPos.position.x *= -1
+		
+
+func flipHeldItem() -> void:
 	if heldItem:
-		heldItem.sprite.flip_h = stateWrap.velocity.x < 0
+		heldItem.sprite.flip_h = sprite.flip_h
 		
 		
 func addPickUpItem(item) -> void:
@@ -77,7 +85,8 @@ func pickUpItem() -> void:
 		heldItem.highlight(false)
 		heldItem.disableDetect()
 		closestItem = null
-		turnAround()
+		flipHeldItemPos()
+		flipHeldItem()
 		
 	
 func dropItem() -> void:
