@@ -6,3 +6,7 @@
 [node name="Key" instance=ExtResource( 1 )]
 collision_layer = 6
 script = ExtResource( 2 )
+
+[node name="Tween" type="Tween" parent="." index="4"]
+
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]
