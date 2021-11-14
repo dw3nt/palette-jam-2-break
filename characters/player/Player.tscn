@@ -268,10 +268,18 @@ script = ExtResource( 6 )
 colliderPath = NodePath("../../CrouchCollision")
 heldItemPosPath = NodePath("../../CrouchHeldItem")
 
+[node name="StandDetect" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
+cast_to = Vector2( 0, -12 )
+collision_mask = 48
+
 [node name="CrouchRun" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 7 )
 colliderPath = NodePath("../../CrouchCollision")
 heldItemPosPath = NodePath("../../CrouchHeldItem")
+
+[node name="StandDetect" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
+cast_to = Vector2( 0, -12 )
+collision_mask = 48
 
 [node name="WindUp" type="Node2D" parent="PlayerStateMachine"]
 script = ExtResource( 10 )

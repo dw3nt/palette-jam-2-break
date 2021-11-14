@@ -40,6 +40,11 @@ _global_script_classes=[ {
 "path": "res://scripts/FileDataManager.gd"
 }, {
 "base": "KinematicBody2D",
+"class": "Key",
+"language": "GDScript",
+"path": "res://objects/Key.gd"
+}, {
+"base": "KinematicBody2D",
 "class": "PickUpItem",
 "language": "GDScript",
 "path": "res://objects/PickupItem.gd"
@@ -71,6 +76,7 @@ _global_script_class_icons={
 "BaseStateMachine": "",
 "DamageAnimationPlayer": "",
 "FileDataManager": "",
+"Key": "",
 "PickUpItem": "",
 "Player": "",
 "PlayerState": "",
@@ -194,7 +200,9 @@ throw={
 
 2d_physics/layer_1="player"
 2d_physics/layer_2="item"
+2d_physics/layer_3="key"
 2d_physics/layer_5="wall"
+2d_physics/layer_6="lock"
 
 [rendering]
 

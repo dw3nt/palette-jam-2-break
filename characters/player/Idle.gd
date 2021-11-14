@@ -1,6 +1,11 @@
 extends PlayerState
 
 
+func ready() -> void:
+	print('ready')
+	fsm.velocity = Vector2(0, GRAVITY)
+
+
 func enter_state(_params : Dictionary = {}) -> void:
 	fsm.anim.play("idle")
 	

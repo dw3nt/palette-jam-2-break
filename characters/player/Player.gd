@@ -11,6 +11,7 @@ onready var stateWrap = $PlayerStateMachine as PlayerStateMachine
 
 func _ready() -> void:
 	stateWrap.ready()
+	stateWrap.velocity = Vector2(0, stateWrap.state.GRAVITY)
 
 
 func _input(event) -> void:
