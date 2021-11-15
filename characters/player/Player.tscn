@@ -232,6 +232,7 @@ position = Vector2( 0, -7 )
 shape = SubResource( 1 )
 
 [node name="CrouchCollision" type="CollisionShape2D" parent="." groups=["player_collision"]]
+visible = false
 position = Vector2( 0, -5 )
 shape = SubResource( 11 )
 
@@ -280,8 +281,21 @@ script = ExtResource( 6 )
 colliderPath = NodePath("../../CrouchCollision")
 heldItemPosPath = NodePath("../../CrouchHeldItem")
 
-[node name="StandDetect" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
-cast_to = Vector2( 0, -12 )
+[node name="StandDetectMiddle" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
+enabled = true
+cast_to = Vector2( 0, -16 )
+collision_mask = 48
+
+[node name="StandDetectRight" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
+position = Vector2( 3, 0 )
+enabled = true
+cast_to = Vector2( 0, -16 )
+collision_mask = 48
+
+[node name="StandDetectLeft" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
+position = Vector2( -3, 0 )
+enabled = true
+cast_to = Vector2( 0, -16 )
 collision_mask = 48
 
 [node name="CrouchRun" type="Node2D" parent="PlayerStateMachine"]
@@ -289,8 +303,21 @@ script = ExtResource( 7 )
 colliderPath = NodePath("../../CrouchCollision")
 heldItemPosPath = NodePath("../../CrouchHeldItem")
 
-[node name="StandDetect" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
-cast_to = Vector2( 0, -12 )
+[node name="StandDetectMiddle" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
+enabled = true
+cast_to = Vector2( 0, -16 )
+collision_mask = 48
+
+[node name="StandDetectRight" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
+position = Vector2( 3, 0 )
+enabled = true
+cast_to = Vector2( 0, -16 )
+collision_mask = 48
+
+[node name="StandDetectLeft" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
+position = Vector2( -3, 0 )
+enabled = true
+cast_to = Vector2( 0, -16 )
 collision_mask = 48
 
 [node name="WindUp" type="Node2D" parent="PlayerStateMachine"]

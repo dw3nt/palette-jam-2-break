@@ -1,15 +1,14 @@
 extends PlayerState
 
-onready var standDetect = $StandDetect as RayCast2D
+onready var standDetects = [ $StandDetectLeft, $StandDetectMiddle, $StandDetectRight ]
 
 
 func enter_state(_params : Dictionary = {}) -> void:
-	standDetect.enabled = true
 	fsm.anim.play("crouch", -1, 0.5)
 	
 	
 func input(event) -> void:
-	if !standDetect.is_colliding() && event.is_action_released("crouch"):
+	if !standDetectsColliding() && event.is_action_released("crouch"):
 		fsm.change_state("Idle")
 	
 #	if event.is_action_pressed("move_right") || event.is_action_pressed("move_left"):
@@ -28,9 +27,13 @@ func physics_process(delta : float) -> void:
 	if fsm.isOnFloor && (Input.get_action_strength("move_right") - Input.get_action_strength("move_left") != 0):
 		fsm.change_state("CrouchRun")
 		
-	if !standDetect.is_colliding() && !Input.is_action_pressed("crouch"):
+	if !standDetectsColliding() && !Input.is_action_pressed("crouch"):
 		fsm.change_state("Idle")
 		
 		
-func exit_state() -> void:
-	standDetect.enabled = false
+func standDetectsColliding() -> bool:
+	for ray in standDetects:
+		if ray.is_colliding():
+			return true
+			
+	return false

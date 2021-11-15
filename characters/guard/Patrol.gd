@@ -43,7 +43,6 @@ func physics_process(delta : float) -> void:
 			fsm.change_state("Idle")
 			return
 	elif wallDetect.is_colliding():
-		print('wall collide')
 		moveDir *= -1
 		handleFacing(moveDir)
 	
