@@ -27,6 +27,7 @@ var activeTransition
 
 
 func _ready():
+	randomize()
 	TransitionsLoader.initTransitions(transitionsWrap)
 	
 	currentRoom = roomWrap.get_child(0)

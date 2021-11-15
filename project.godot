@@ -39,6 +39,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/FileDataManager.gd"
 }, {
+"base": "BaseState",
+"class": "GuardState",
+"language": "GDScript",
+"path": "res://characters/guard/GuardState.gd"
+}, {
+"base": "BaseStateMachine",
+"class": "GuardStateMachine",
+"language": "GDScript",
+"path": "res://characters/guard/GuardStateMachine.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Key",
 "language": "GDScript",
@@ -76,6 +86,8 @@ _global_script_class_icons={
 "BaseStateMachine": "",
 "DamageAnimationPlayer": "",
 "FileDataManager": "",
+"GuardState": "",
+"GuardStateMachine": "",
 "Key": "",
 "PickUpItem": "",
 "Player": "",
@@ -201,8 +213,10 @@ throw={
 2d_physics/layer_1="player"
 2d_physics/layer_2="item"
 2d_physics/layer_3="key"
+2d_physics/layer_4="guard"
 2d_physics/layer_5="wall"
 2d_physics/layer_6="lock"
+2d_physics/layer_7="guard_edge"
 
 [rendering]
 
