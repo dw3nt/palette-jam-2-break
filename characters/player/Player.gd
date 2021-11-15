@@ -27,7 +27,7 @@ func _unhandled_input(event) -> void:
 	
 	
 func _process(delta) -> void:
-	if heldItem:
+	if heldItem && is_instance_valid(heldItem):
 		heldItem.global_position = stateWrap.state.heldItemPos.global_position
 	
 	stateWrap.state.process(delta)
@@ -51,7 +51,7 @@ func flipHeldItemPos() -> void:
 		
 
 func flipHeldItem() -> void:
-	if heldItem:
+	if heldItem && is_instance_valid(heldItem):
 		heldItem.sprite.flip_h = sprite.flip_h
 		
 		
