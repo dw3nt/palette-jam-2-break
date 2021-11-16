@@ -5,6 +5,7 @@ const IDLE_TIME_MAX := 6.0
 
 var idleTime : float
 
+onready var playerDetect = $PlayerDetect as RayCast2D
 onready var timer = $Timer as Timer
 
 
@@ -16,13 +17,27 @@ func enter_state(_params : Dictionary = {}) -> void:
 	fsm.anim.play("idle")
 	timer.start(idleTime)
 	
+	playerDetect.enabled = true
+	playerDetect.cast_to.x = -PLAYER_DETECT_DISTANCE if fsm.sprite.flip_h else PLAYER_DETECT_DISTANCE
+	
 	
 func physics_process(delta : float) -> void:
+	if !fsm.isOnFloor:
+		fsm.change_state("Fall")
+		return
+	
 	if fsm.velocity.x != 0:
 		fsm.velocity.x = lerp(fsm.velocity.x, 0.0, FRICTION)
 		if abs(fsm.velocity.x) < LERP_THRESHOLD:
 			fsm.velocity.x = 0
+	elif playerDetect.is_colliding():
+		fsm.change_state("Alert", { "target" : playerDetect.get_collider() })
 
 
 func _on_Timer_timeout() -> void:
 	fsm.change_state("Patrol", { "moveDir" : 1 if randf() < 0.5 else -1 })
+	
+	
+func exit_state() -> void:
+	timer.stop()
+	playerDetect.enabled = false

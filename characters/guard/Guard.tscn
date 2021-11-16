@@ -1,10 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/images/characters/guard.png" type="Texture" id=1]
 [ext_resource path="res://characters/guard/Guard.gd" type="Script" id=2]
 [ext_resource path="res://characters/guard/GuardStateMachine.gd" type="Script" id=3]
 [ext_resource path="res://characters/guard/Idle.gd" type="Script" id=4]
 [ext_resource path="res://characters/guard/Patrol.gd" type="Script" id=5]
+[ext_resource path="res://characters/guard/Fall.gd" type="Script" id=6]
+[ext_resource path="res://characters/guard/Chase.gd" type="Script" id=7]
+[ext_resource path="res://assets/images/exclaimation.png" type="Texture" id=8]
+[ext_resource path="res://characters/guard/Alert.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5, 10 )
@@ -22,6 +26,63 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ExclaimationSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "alert"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("ExclaimationSprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "fall"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 9, 10 ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -65,7 +126,12 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -12 )
 texture = ExtResource( 1 )
-hframes = 9
+hframes = 11
+
+[node name="ExclaimationSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -32 )
+texture = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -10 )
@@ -74,6 +140,8 @@ shape = SubResource( 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 anims/RESET = SubResource( 2 )
+anims/alert = SubResource( 6 )
+anims/fall = SubResource( 5 )
 anims/idle = SubResource( 3 )
 anims/run = SubResource( 4 )
 
@@ -81,12 +149,17 @@ anims/run = SubResource( 4 )
 script = ExtResource( 3 )
 animationPlayerPath = NodePath("../AnimationPlayer")
 spritePath = NodePath("../Sprite")
+exclaimationSpritePath = NodePath("../ExclaimationSprite")
 
 [node name="Idle" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 4 )
 
 [node name="Timer" type="Timer" parent="GuardStateMachine/Idle"]
 one_shot = true
+
+[node name="PlayerDetect" type="RayCast2D" parent="GuardStateMachine/Idle"]
+position = Vector2( 0, -4 )
+cast_to = Vector2( 50, 0 )
 
 [node name="Patrol" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 5 )
@@ -107,6 +180,23 @@ one_shot = true
 [node name="WallDetect" type="RayCast2D" parent="GuardStateMachine/Patrol"]
 position = Vector2( 0, -4 )
 cast_to = Vector2( 6, 0 )
+collision_mask = 16
+
+[node name="PlayerDetect" type="RayCast2D" parent="GuardStateMachine/Patrol"]
+position = Vector2( 0, -4 )
+cast_to = Vector2( 50, 0 )
+
+[node name="Fall" type="Node2D" parent="GuardStateMachine"]
+script = ExtResource( 6 )
+
+[node name="Alert" type="Node2D" parent="GuardStateMachine"]
+script = ExtResource( 9 )
+
+[node name="Chase" type="Node2D" parent="GuardStateMachine"]
+script = ExtResource( 7 )
+
+[node name="TargetSightDetect" type="RayCast2D" parent="GuardStateMachine/Chase"]
+position = Vector2( 0, -16 )
 collision_mask = 16
 
 [connection signal="timeout" from="GuardStateMachine/Idle/Timer" to="GuardStateMachine/Idle" method="_on_Timer_timeout"]
