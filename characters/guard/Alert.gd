@@ -14,9 +14,5 @@ func physics_process(delta : float) -> void:
 		fsm.change_state("Chase", { "target" : target })
 		return
 		
-	if fsm.velocity.x != 0:
-		fsm.velocity.x = lerp(fsm.velocity.x, 0.0, FRICTION)
-		if abs(fsm.velocity.x) < LERP_THRESHOLD:
-			fsm.velocity.x = 0
-	
+	slideToHalt()
 	fsm.velocity.y += GRAVITY

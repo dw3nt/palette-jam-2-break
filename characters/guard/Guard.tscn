@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://assets/images/characters/guard.png" type="Texture" id=1]
 [ext_resource path="res://characters/guard/Guard.gd" type="Script" id=2]
@@ -9,6 +9,32 @@
 [ext_resource path="res://characters/guard/Chase.gd" type="Script" id=7]
 [ext_resource path="res://assets/images/exclaimation.png" type="Texture" id=8]
 [ext_resource path="res://characters/guard/Alert.gd" type="Script" id=9]
+[ext_resource path="res://assets/images/stun-sparks.png" type="Texture" id=10]
+[ext_resource path="res://characters/guard/Stun.gd" type="Script" id=11]
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 10 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 10 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 10 )
+region = Rect2( 48, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
+"loop": true,
+"name": "default",
+"speed": 8.0
+} ]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5, 10 )
@@ -119,6 +145,23 @@ tracks/0/keys = {
 "values": [ 5, 6, 7, 8 ]
 }
 
+[sub_resource type="Animation" id=7]
+resource_name = "stun"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 11, 12, 13, 14, 15 ]
+}
+
 [node name="Guard" type="KinematicBody2D"]
 collision_layer = 8
 script = ExtResource( 2 )
@@ -126,7 +169,14 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -12 )
 texture = ExtResource( 1 )
-hframes = 11
+hframes = 16
+
+[node name="StunSparksSprite" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 0, -28 )
+frames = SubResource( 8 )
+frame = 2
+playing = true
 
 [node name="ExclaimationSprite" type="Sprite" parent="."]
 visible = false
@@ -144,12 +194,14 @@ anims/alert = SubResource( 6 )
 anims/fall = SubResource( 5 )
 anims/idle = SubResource( 3 )
 anims/run = SubResource( 4 )
+anims/stun = SubResource( 7 )
 
 [node name="GuardStateMachine" type="Node2D" parent="."]
 script = ExtResource( 3 )
 animationPlayerPath = NodePath("../AnimationPlayer")
 spritePath = NodePath("../Sprite")
 exclaimationSpritePath = NodePath("../ExclaimationSprite")
+stunSparksSpritePath = NodePath("../StunSparksSprite")
 
 [node name="Idle" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 4 )
@@ -197,8 +249,17 @@ script = ExtResource( 7 )
 
 [node name="TargetSightDetect" type="RayCast2D" parent="GuardStateMachine/Chase"]
 position = Vector2( 0, -16 )
+cast_to = Vector2( 0, 1 )
 collision_mask = 16
+
+[node name="Stun" type="Node2D" parent="GuardStateMachine"]
+script = ExtResource( 11 )
+
+[node name="Timer" type="Timer" parent="GuardStateMachine/Stun"]
+wait_time = 3.0
+one_shot = true
 
 [connection signal="timeout" from="GuardStateMachine/Idle/Timer" to="GuardStateMachine/Idle" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/Timer" to="GuardStateMachine/Patrol" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/EdgeDetect/EdgeTimer" to="GuardStateMachine/Patrol" method="_on_EdgeTimer_timeout"]
+[connection signal="timeout" from="GuardStateMachine/Stun/Timer" to="GuardStateMachine/Stun" method="_on_Timer_timeout"]

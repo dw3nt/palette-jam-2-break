@@ -17,3 +17,10 @@ var fsm : GuardStateMachine
 
 func handleFacing(facingDir : int) -> void:
 	fsm.sprite.flip_h = facingDir < 0
+	
+	
+func slideToHalt() -> void:
+	if fsm.velocity.x != 0:
+		fsm.velocity.x = lerp(fsm.velocity.x, 0.0, FRICTION)
+		if abs(fsm.velocity.x) < LERP_THRESHOLD:
+			fsm.velocity.x = 0

@@ -26,11 +26,9 @@ func physics_process(delta : float) -> void:
 		fsm.change_state("Fall")
 		return
 	
-	if fsm.velocity.x != 0:
-		fsm.velocity.x = lerp(fsm.velocity.x, 0.0, FRICTION)
-		if abs(fsm.velocity.x) < LERP_THRESHOLD:
-			fsm.velocity.x = 0
-	elif playerDetect.is_colliding():
+	
+	
+	if playerDetect.is_colliding():
 		fsm.change_state("Alert", { "target" : playerDetect.get_collider() })
 
 
