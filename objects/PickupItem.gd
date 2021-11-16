@@ -1,11 +1,11 @@
 extends KinematicBody2D
 class_name PickUpItem
 
+const COLLIDER_Y_DIFF := 25.0
 const GRAVITY := 6.0
 const FRICTION := 0.2
 const AIR_FRICTION := 0.05
-const THROW_SPEED_UP := -80.0
-const THROW_SPEED_FORWARD := 100.0
+const THROW_FORCE := 150.0
 const MOVE_THRESHOLD := 0.05
 
 var velocity = Vector2.ZERO
@@ -27,15 +27,18 @@ func _physics_process(delta : float) -> void:
 		velocity.y = GRAVITY
 		velocity.x = lerp(velocity.x, 0.0, FRICTION)
 		
+	if is_on_ceiling():
+		velocity.y = GRAVITY
+		
 	move_and_slide(velocity, Vector2.UP)
 	
 	if abs(velocity.x) < MOVE_THRESHOLD:
 		velocity.x = 0.0
 	
 	
-func throw(throwForwardScale : float = 1.0, throwUpScale : float = 1.0) -> void:
-	var throwDir = -1 if sprite.flip_h else 1
-	velocity = Vector2(THROW_SPEED_FORWARD * throwDir * throwForwardScale, THROW_SPEED_UP * throwUpScale)
+func throw(throwDir : Vector2, throwScale : float) -> void:
+	print(throwDir)
+	velocity = throwDir * THROW_FORCE * throwScale
 	call_deferred("set_physics_process", true)
 	enableDetectDelay.start()
 

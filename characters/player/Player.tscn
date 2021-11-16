@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://assets/images/characters/player.png" type="Texture" id=1]
 [ext_resource path="res://characters/player/PlayerStateMachine.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://characters/player/Fall.gd" type="Script" id=9]
 [ext_resource path="res://characters/player/WindUp.gd" type="Script" id=10]
 [ext_resource path="res://characters/player/Throw.gd" type="Script" id=11]
+[ext_resource path="res://objects/Aimer.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 3, 7 )
@@ -213,6 +214,10 @@ tracks/0/keys = {
 collision_mask = 16
 script = ExtResource( 8 )
 
+[node name="Aimer" parent="." instance=ExtResource( 12 )]
+visible = false
+position = Vector2( 0, -8 )
+
 [node name="StandHeldItem" type="Position2D" parent="." groups=["player_held_item_pos"]]
 position = Vector2( -3, -8 )
 
@@ -324,9 +329,10 @@ collision_mask = 48
 script = ExtResource( 10 )
 colliderPath = NodePath("../../StandCollision")
 heldItemPosPath = NodePath("../../WindUpHeldItem")
+aimerPath = NodePath("../../Aimer")
 
 [node name="Timer" type="Timer" parent="PlayerStateMachine/WindUp"]
-wait_time = 1.5
+wait_time = 0.75
 one_shot = true
 
 [node name="Throw" type="Node2D" parent="PlayerStateMachine"]

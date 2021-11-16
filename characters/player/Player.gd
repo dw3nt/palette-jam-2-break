@@ -95,5 +95,5 @@ func pickUpItem() -> void:
 	
 func dropItem() -> void:
 	if heldItem:
-		heldItem.throw()
+		heldItem.throw(Vector2(1.0, 1.0).normalized(), 0.5)
 		heldItem = null

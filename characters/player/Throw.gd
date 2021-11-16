@@ -10,7 +10,7 @@ func enter_state(params : Dictionary = {}) -> void:
 	fsm.anim.play(throwAnim)
 	timer.start()
 	
-	fsm.get_parent().heldItem.throw(params.scale, params.scale)
+	fsm.get_parent().heldItem.throw(params.throwDir, params.scale)
 	fsm.get_parent().heldItem = null
 	
 	

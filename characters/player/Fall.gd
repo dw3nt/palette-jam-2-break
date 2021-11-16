@@ -9,9 +9,15 @@ func physics_process(delta : float) -> void:
 	var xInput = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if fsm.isOnFloor:
 		if xInput == 0:
-			fsm.change_state("Idle")
+			if Input.is_action_pressed("crouch"):
+				fsm.change_state("Crouch")
+			else:
+				fsm.change_state("Idle")
 		else:
-			fsm.change_state("Run")
+			if Input.is_action_pressed("crouch"):
+				fsm.change_state("CrouchRun")
+			else:
+				fsm.change_state("Run")
 		return
 		
 	fsm.velocity.y += GRAVITY
