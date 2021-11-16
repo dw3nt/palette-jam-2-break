@@ -1,5 +1,7 @@
 extends GuardState
 
+const TARGET_POS_OFFSET := Vector2(0, -12)
+
 var target : Player
 
 onready var targetSight = $TargetSightDetect as RayCast2D
@@ -11,10 +13,12 @@ func enter_state(params : Dictionary = {}) -> void:
 	target = params.target
 	
 	
-func physics_process(delta : float) -> void:
+func process(delta : float) -> void:
 	if !canSeeTarget():
 		fsm.change_state("Patrol")
 	
+	
+func physics_process(delta : float) -> void:
 	var moveDirX = sign(target.global_position.x - global_position.x)
 	fsm.velocity.x = moveDirX * CHASE_SPEED
 	
@@ -22,8 +26,9 @@ func physics_process(delta : float) -> void:
 	
 	
 func canSeeTarget() -> bool:
-	var distanceToTarget = global_position.distance_to(target.global_position)
-	targetSight.cast_to = (target.global_position - targetSight.global_position).normalized() * distanceToTarget
+	var targetPos = target.global_position + TARGET_POS_OFFSET
+	var distanceToTarget = targetSight.global_position.distance_to(targetPos)
+	targetSight.cast_to = (targetPos - targetSight.global_position).normalized() * distanceToTarget
 	
 	return !targetSight.is_colliding()
 	

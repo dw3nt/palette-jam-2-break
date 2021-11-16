@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://assets/images/characters/guard.png" type="Texture" id=1]
 [ext_resource path="res://characters/guard/Guard.gd" type="Script" id=2]
@@ -162,6 +162,10 @@ tracks/0/keys = {
 "values": [ 11, 12, 13, 14, 15 ]
 }
 
+[sub_resource type="CapsuleShape2D" id=13]
+radius = 6.0
+height = 12.0
+
 [node name="Guard" type="KinematicBody2D"]
 collision_layer = 8
 script = ExtResource( 2 )
@@ -175,7 +179,6 @@ hframes = 16
 visible = false
 position = Vector2( 0, -28 )
 frames = SubResource( 8 )
-frame = 2
 playing = true
 
 [node name="ExclaimationSprite" type="Sprite" parent="."]
@@ -196,6 +199,14 @@ anims/idle = SubResource( 3 )
 anims/run = SubResource( 4 )
 anims/stun = SubResource( 7 )
 
+[node name="HurtDetect" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtDetect"]
+position = Vector2( 0, -10 )
+shape = SubResource( 13 )
+
 [node name="GuardStateMachine" type="Node2D" parent="."]
 script = ExtResource( 3 )
 animationPlayerPath = NodePath("../AnimationPlayer")
@@ -212,6 +223,7 @@ one_shot = true
 [node name="PlayerDetect" type="RayCast2D" parent="GuardStateMachine/Idle"]
 position = Vector2( 0, -4 )
 cast_to = Vector2( 50, 0 )
+collision_mask = 17
 
 [node name="Patrol" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 5 )
@@ -237,6 +249,7 @@ collision_mask = 16
 [node name="PlayerDetect" type="RayCast2D" parent="GuardStateMachine/Patrol"]
 position = Vector2( 0, -4 )
 cast_to = Vector2( 50, 0 )
+collision_mask = 17
 
 [node name="Fall" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 6 )
@@ -259,6 +272,7 @@ script = ExtResource( 11 )
 wait_time = 3.0
 one_shot = true
 
+[connection signal="body_entered" from="HurtDetect" to="." method="_on_HurtDetect_body_entered"]
 [connection signal="timeout" from="GuardStateMachine/Idle/Timer" to="GuardStateMachine/Idle" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/Timer" to="GuardStateMachine/Patrol" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/EdgeDetect/EdgeTimer" to="GuardStateMachine/Patrol" method="_on_EdgeTimer_timeout"]

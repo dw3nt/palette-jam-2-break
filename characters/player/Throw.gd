@@ -11,6 +11,7 @@ func enter_state(params : Dictionary = {}) -> void:
 	timer.start()
 	
 	fsm.get_parent().heldItem.throw(params.throwDir, params.scale)
+	fsm.get_parent().heldItem.isHeld = false
 	fsm.get_parent().heldItem = null
 	
 	

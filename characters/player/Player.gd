@@ -87,6 +87,7 @@ func findClosestItem() -> void:
 func pickUpItem() -> void:
 	if closestItem:
 		heldItem = closestItem
+		heldItem.isHeld = true
 		heldItem.highlight(false)
 		heldItem.disableDetect()
 		closestItem = null
@@ -96,5 +97,6 @@ func pickUpItem() -> void:
 	
 func dropItem() -> void:
 	if heldItem:
+		heldItem.isHeld = false
 		heldItem.throw(Vector2(1.0, 1.0).normalized(), 0.5)
 		heldItem = null

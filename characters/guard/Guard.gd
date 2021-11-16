@@ -24,3 +24,11 @@ func _physics_process(delta) -> void:
 	stateWrap.state.physics_process(delta)
 	move_and_slide(stateWrap.velocity, Vector2.UP)
 	stateWrap.isOnFloor = is_on_floor()
+
+
+func _on_HurtDetect_body_entered(body : PickUpItem) -> void:
+	if !body:
+		return
+		
+	if body.isThrown:
+		stateWrap.change_state("Stun")

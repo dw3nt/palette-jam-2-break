@@ -50,7 +50,7 @@ func physics_process(delta : float) -> void:
 	elif wallDetect.is_colliding():
 		moveDir *= -1
 		handleFacing(moveDir)
-	elif playerDetect.is_colliding():
+	elif playerDetect.is_colliding() && playerDetect.get_collider() is Player:
 		fsm.change_state("Alert", { "target" : playerDetect.get_collider() })
 	
 	fsm.velocity.x = moveDir * PATROL_SPEED

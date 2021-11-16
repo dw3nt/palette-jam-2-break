@@ -28,7 +28,7 @@ func physics_process(delta : float) -> void:
 	
 	slideToHalt()
 	
-	if playerDetect.is_colliding():
+	if playerDetect.is_colliding() && playerDetect.get_collider() is Player:
 		fsm.change_state("Alert", { "target" : playerDetect.get_collider() })
 
 
