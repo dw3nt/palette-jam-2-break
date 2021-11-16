@@ -23,7 +23,7 @@ func enter_state(params : Dictionary = {}) -> void:
 		throwAnim = "throw"
 	
 	timer.start()
-	fsm.heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1
+	heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1
 	aimer.visible = true
 	
 	
@@ -31,14 +31,6 @@ func input(event) -> void:
 	if event.is_action_released("throw"):
 		var throwDir = (aimer.sprite.global_position - aimer.global_position).normalized()
 		fsm.change_state("Throw", { "throwDir" : throwDir, "scale" : calculateThrowScale(), "throwAnim" : throwAnim })
-		
-	if event.is_action_pressed("move_right"):
-		handleFacing(1)
-		faceWindUp()
-		
-	if event.is_action_pressed("move_left"):
-		handleFacing(-1)
-		faceWindUp()
 		
 	if event.is_action_pressed("crouch"):
 		fsm.anim.play("crouch_wind_up")
@@ -67,8 +59,8 @@ func physics_process(delta : float) -> void:
 			
 			
 func faceWindUp() -> void:
-	fsm.heldItemPos.position = WIND_UP_ITEM_POS
-	fsm.heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1
+	heldItemPos.position = WIND_UP_ITEM_POS
+	heldItemPos.position.x *= -1 if fsm.sprite.flip_h else 1
 	
 	
 func calculateThrowScale() -> float:
