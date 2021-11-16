@@ -7,6 +7,7 @@ export(NodePath) var animationPlayerPath : NodePath
 export(NodePath) var spritePath : NodePath
 
 var state : BaseState
+var stateParams : Dictionary
 var velocity := Vector2.ZERO
 
 var history := []
@@ -32,7 +33,8 @@ func ready() -> void:
 	
 	
 func revert_state() -> void:
-	change_state(history[history.size() - 1])
+	var lastStateData = history[history.size() - 1]
+	change_state(lastStateData.state, lastStateData.params)
 	
 	
 func change_state(newStateName : String, params : Dictionary = {}) -> void:
@@ -42,6 +44,7 @@ func change_state(newStateName : String, params : Dictionary = {}) -> void:
 	state = get_node(newStateName)
 	state.fsm = self
 	state.isActiveState = true
+	stateParams = params
 	state.enter_state(params)
 	
 	
@@ -49,7 +52,10 @@ func update_history(_stateName : String) -> void:
 	if history.size() > HISTORY_LIMIT:
 		history.pop_front()
 		
-	history.append(state.name)
+	history.append({
+		"state" : state.name,
+		"params" : stateParams
+	})
 	
 	
 func _on_FSM_Anim_animation_finished(anim_name)  -> void:
