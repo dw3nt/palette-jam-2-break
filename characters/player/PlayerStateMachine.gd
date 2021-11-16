@@ -5,6 +5,7 @@ export(NodePath) var heldItemPositionPath : NodePath
 
 var heldItemPos : Position2D
 var isOnFloor : bool
+var isOnCeiling : bool
 
 
 func ready() -> void:

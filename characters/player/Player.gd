@@ -37,6 +37,7 @@ func _physics_process(delta) -> void:
 	stateWrap.state.physics_process(delta)
 	move_and_slide(stateWrap.velocity, Vector2.UP)
 	stateWrap.isOnFloor = is_on_floor()
+	stateWrap.isOnCeiling = is_on_ceiling()
 	
 	for index in get_slide_count():
 		stateWrap.state.handle_collision(get_slide_collision(index))

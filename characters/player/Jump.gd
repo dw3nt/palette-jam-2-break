@@ -9,6 +9,9 @@ func enter_state(_params : Dictionary = {}) -> void:
 	
 	
 func physics_process(delta : float) -> void:
+	if fsm.isOnCeiling:
+		fsm.velocity.y = GRAVITY
+	
 	if fsm.velocity.y > 0.0:
 		fsm.change_state("Fall")
 		return
@@ -23,9 +26,3 @@ func physics_process(delta : float) -> void:
 	
 	if xInput != 0:
 		fsm.get_parent().turnAround()
-		
-		
-func handle_collision(collision : KinematicCollision2D) -> void:
-	if collision.collider is WallBlock:
-		if global_position.y > collision.collider.global_position.y && (abs(global_position.y - collision.collider.global_position.y) > COLLIDER_Y_DIFF):
-			fsm.velocity.y = GRAVITY
