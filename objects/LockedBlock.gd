@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends WallBlock
 
 
 func _on_KeyDetect_body_entered(body : Key) -> void:

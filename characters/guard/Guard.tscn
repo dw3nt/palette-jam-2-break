@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://assets/images/characters/guard.png" type="Texture" id=1]
 [ext_resource path="res://characters/guard/Guard.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://characters/guard/Alert.gd" type="Script" id=9]
 [ext_resource path="res://assets/images/stun-sparks.png" type="Texture" id=10]
 [ext_resource path="res://characters/guard/Stun.gd" type="Script" id=11]
+[ext_resource path="res://assets/images/question.png" type="Texture" id=12]
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 10 )
@@ -165,6 +166,9 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=14]
 radius = 96.0
 
+[sub_resource type="CircleShape2D" id=16]
+radius = 8.0
+
 [sub_resource type="CapsuleShape2D" id=13]
 radius = 6.0
 height = 12.0
@@ -193,6 +197,11 @@ visible = false
 position = Vector2( 0, -32 )
 texture = ExtResource( 8 )
 
+[node name="QuestionSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -32 )
+texture = ExtResource( 12 )
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 0, -10 )
@@ -211,11 +220,20 @@ anims/stun = SubResource( 7 )
 position = Vector2( 0, -15 )
 
 [node name="VisionRangeDetect" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionRangeDetect"]
 shape = SubResource( 14 )
+
+[node name="HearingDetect" type="Area2D" parent="."]
+position = Vector2( 0, -16 )
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HearingDetect"]
+shape = SubResource( 16 )
 
 [node name="HurtDetect" type="Area2D" parent="."]
 visible = false
@@ -231,6 +249,7 @@ script = ExtResource( 3 )
 animationPlayerPath = NodePath("../AnimationPlayer")
 spritePath = NodePath("../Sprite")
 exclaimationSpritePath = NodePath("../ExclaimationSprite")
+questionSpritePath = NodePath("../QuestionSprite")
 stunSparksSpritePath = NodePath("../StunSparksSprite")
 lineOfSightPosPath = NodePath("../LineOfSightPosition")
 
@@ -271,8 +290,10 @@ script = ExtResource( 9 )
 script = ExtResource( 7 )
 
 [node name="ChaseableRangeDetect" type="Area2D" parent="GuardStateMachine/Chase"]
+visible = false
 position = Vector2( 0, -8 )
 collision_layer = 0
+collision_mask = 128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GuardStateMachine/Chase/ChaseableRangeDetect"]
 shape = SubResource( 15 )
@@ -290,5 +311,6 @@ one_shot = true
 [connection signal="timeout" from="GuardStateMachine/Idle/Timer" to="GuardStateMachine/Idle" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/Timer" to="GuardStateMachine/Patrol" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/EdgeDetect/EdgeTimer" to="GuardStateMachine/Patrol" method="_on_EdgeTimer_timeout"]
-[connection signal="body_exited" from="GuardStateMachine/Chase/ChaseableRangeDetect" to="GuardStateMachine/Chase" method="_on_ChaseableRangeDetect_body_exited"]
+[connection signal="area_entered" from="GuardStateMachine/Chase/ChaseableRangeDetect" to="GuardStateMachine/Chase" method="_on_ChaseableRangeDetect_area_entered"]
+[connection signal="area_exited" from="GuardStateMachine/Chase/ChaseableRangeDetect" to="GuardStateMachine/Chase" method="_on_ChaseableRangeDetect_area_exited"]
 [connection signal="timeout" from="GuardStateMachine/Stun/Timer" to="GuardStateMachine/Stun" method="_on_Timer_timeout"]

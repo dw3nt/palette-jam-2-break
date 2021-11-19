@@ -27,22 +27,32 @@ func slideToHalt() -> void:
 			fsm.velocity.x = 0
 			
 			
+func heardNoise(position : Vector2) -> void:
+	pass
+			
+			
 func canSeeChaseTarget() -> bool:
 	if fsm.chaseTarget:
+		var worldSpace = get_world_2d().direct_space_state
+		
 		var headResult = null
 		var midResult = null
-		var feetResult = get_world_2d().direct_space_state.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position, [], 144, true, true)
+		var feetResult = worldSpace.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position, [], 144, true, true)
 		if fsm.chaseTarget.isCrouched:
-			headResult = get_world_2d().direct_space_state.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -6), [], 144, true, true)
-			midResult = get_world_2d().direct_space_state.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -2), [], 144, true, true)
+			headResult = worldSpace.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -6), [], 144, true, true)
+			midResult = worldSpace.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -2), [], 144, true, true)
 		else:
-			headResult = get_world_2d().direct_space_state.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -18), [], 144, true, true)
-			midResult = get_world_2d().direct_space_state.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -5), [], 144, true, true)
+			headResult = worldSpace.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -18), [], 144, true, true)
+			midResult = worldSpace.intersect_ray(fsm.lineOfSightPos.global_position, fsm.chaseTarget.global_position + Vector2(0, -5), [], 144, true, true)
 		
 		var facingVector = Vector2.LEFT if fsm.sprite.flip_h else Vector2.RIGHT
 		var chaseTargetDir = (fsm.chaseTarget.global_position - global_position).normalized()
 		var dotProd = chaseTargetDir.dot(facingVector)
 		
-		return ( (feetResult && !feetResult.collider is WallBlock) || (midResult && !midResult.collider is WallBlock) || (headResult && !headResult.collider is WallBlock) ) && dotProd >= FOV_PROD
+		return dotProd >= FOV_PROD && ( 
+			( feetResult && !feetResult.collider.is_in_group("block_vision") ) || 
+			( midResult && !midResult.collider.is_in_group("block_vision") ) || 
+			( headResult && !headResult.collider.is_in_group("block_vision") )
+		) 
 		
 	return false

@@ -4,6 +4,8 @@ const IDLE_TIME_MIN := 2.5
 const IDLE_TIME_MAX := 6.0
 
 var idleTime : float
+var standSoundTarget : Player
+var crouchSoundTarget : Player
 
 onready var timer = $Timer as Timer
 
@@ -27,7 +29,11 @@ func physics_process(delta : float) -> void:
 		return
 	
 	slideToHalt()
+	
 
+func heardNoise(position : Vector2) -> void:
+	fsm.change_state("Patrol", { "noisePosition" : position })
+	
 
 func _on_Timer_timeout() -> void:
 	fsm.change_state("Patrol", { "moveDir" : 1 if randf() < 0.5 else -1 })
@@ -35,3 +41,31 @@ func _on_Timer_timeout() -> void:
 	
 func exit_state() -> void:
 	timer.stop()
+
+
+func _on_StandSoundDetect_body_entered(body : Player) -> void:
+	if !body:
+		return
+		
+	standSoundTarget = body
+
+
+func _on_StandSoundDetect_body_exited(body : Player) -> void:
+	if !body:
+		return
+		
+	standSoundTarget = null
+
+
+func _on_CrouchSoundDetect_body_entered(body : Player) -> void:
+	if !body:
+		return
+		
+	crouchSoundTarget = body
+
+
+func _on_CrouchSoundDetect_body_exited(body : Player) -> void:
+	if !body:
+		return
+		
+	crouchSoundTarget = null

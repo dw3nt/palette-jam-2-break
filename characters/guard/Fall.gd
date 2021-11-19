@@ -17,7 +17,6 @@ func physics_process(delta : float) -> void:
 		return
 		
 	fsm.velocity.y += GRAVITY
-	print(fsm.velocity.y)
 	if abs(fsm.velocity.x) > AIR_MOVE_SPEED && sign(xInput) == sign(fsm.velocity.x):
 		fsm.velocity.x = lerp(fsm.velocity.x, AIR_MOVE_SPEED * sign(fsm.velocity.x), AIR_FRICTION)
 	else:

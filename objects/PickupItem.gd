@@ -1,6 +1,8 @@
 extends KinematicBody2D
 class_name PickUpItem
 
+signal sound_requested(item, mag)
+
 const THROW_MAGNITUDE_THRESHOLD := 10.0
 const COLLIDER_Y_DIFF := 25.0
 const GRAVITY := 6.0
@@ -8,6 +10,8 @@ const FRICTION := 0.1
 const AIR_FRICTION := 0.05
 const THROW_FORCE := 150.0
 const MOVE_THRESHOLD := 0.05
+
+export(float) var soundMagnitude := 128.0
 
 var velocity = Vector2.ZERO
 var isThrown : bool = false
@@ -30,10 +34,17 @@ func _physics_process(delta : float) -> void:
 		velocity.y = GRAVITY
 		velocity.x = lerp(velocity.x, 0.0, FRICTION)
 		
-	if is_on_ceiling():
-		velocity.y = GRAVITY
-		
 	move_and_slide(velocity, Vector2.UP)
+	if isThrown:
+		for index in get_slide_count():
+			var collision = get_slide_collision(index)
+			if collision.collider.is_in_group("block_vision"):
+				emit_signal("sound_requested", self, soundMagnitude)
+				
+	if is_on_ceiling():
+		if isThrown:
+			emit_signal("sound_requested", self, soundMagnitude)
+		velocity.y = GRAVITY
 	
 	if abs(velocity.x) < MOVE_THRESHOLD:
 		velocity.x = 0.0

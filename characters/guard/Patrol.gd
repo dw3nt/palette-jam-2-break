@@ -20,6 +20,10 @@ func _ready() -> void:
 
 
 func enter_state(params : Dictionary = {}) -> void:
+	shouldTurnAround = true
+	edgeDetect.enabled = true
+	wallDetect.enabled = true
+	
 	if params.keys().has("moveDir") && params.moveDir:
 		moveDir = params.moveDir
 	
@@ -27,9 +31,6 @@ func enter_state(params : Dictionary = {}) -> void:
 	timer.start(patrolTime)
 	edgeTimer.start()
 	
-	shouldTurnAround = true
-	edgeDetect.enabled = true
-	wallDetect.enabled = true
 	handleFacing(moveDir)
 
 
@@ -57,6 +58,10 @@ func physics_process(delta : float) -> void:
 	fsm.velocity.x = moveDir * PATROL_SPEED
 	
 	
+func heardNoise(position : Vector2) -> void:
+	fsm.change_state("Patrol", { "noisePosition" : position })
+	
+	
 func handleFacing(facingDir : int) -> void:
 	.handleFacing(facingDir)
 	edgeDetect.position.x = facingDir * EDGE_DETECT_OFFSET
@@ -76,3 +81,4 @@ func exit_state() -> void:
 	wallDetect.enabled = false
 	timer.stop()
 	edgeTimer.stop()
+	fsm.questionSprite.visible = false
