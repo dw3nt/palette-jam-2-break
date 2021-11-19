@@ -379,16 +379,15 @@ texture = ExtResource( 1 )
 hframes = 23
 
 [node name="StandCollision" type="CollisionShape2D" parent="." groups=["player_collision"]]
-visible = false
 position = Vector2( 0, -7 )
 shape = SubResource( 1 )
 
 [node name="CrouchCollision" type="CollisionShape2D" parent="." groups=["player_collision"]]
-visible = false
 position = Vector2( 0, -5 )
 shape = SubResource( 11 )
 
 [node name="SightDetect" type="Area2D" parent="."]
+visible = false
 collision_layer = 128
 collision_mask = 0
 
@@ -442,23 +441,20 @@ colliderPath = NodePath("../../CrouchCollision")
 heldItemPosPath = NodePath("../../CrouchHeldItem")
 
 [node name="StandDetectMiddle" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
-visible = false
 enabled = true
-cast_to = Vector2( 0, -16 )
+cast_to = Vector2( 0, -12 )
 collision_mask = 48
 
 [node name="StandDetectRight" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
-visible = false
 position = Vector2( 3, 0 )
 enabled = true
-cast_to = Vector2( 0, -16 )
+cast_to = Vector2( 0, -12 )
 collision_mask = 48
 
 [node name="StandDetectLeft" type="RayCast2D" parent="PlayerStateMachine/Crouch"]
-visible = false
 position = Vector2( -3, 0 )
 enabled = true
-cast_to = Vector2( 0, -16 )
+cast_to = Vector2( 0, -12 )
 collision_mask = 48
 
 [node name="CrouchRun" type="Node2D" parent="PlayerStateMachine"]
@@ -469,21 +465,21 @@ heldItemPosPath = NodePath("../../CrouchHeldItem")
 [node name="StandDetectMiddle" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
 visible = false
 enabled = true
-cast_to = Vector2( 0, -16 )
+cast_to = Vector2( 0, -12 )
 collision_mask = 48
 
 [node name="StandDetectRight" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
 visible = false
 position = Vector2( 3, 0 )
 enabled = true
-cast_to = Vector2( 0, -16 )
+cast_to = Vector2( 0, -12 )
 collision_mask = 48
 
 [node name="StandDetectLeft" type="RayCast2D" parent="PlayerStateMachine/CrouchRun"]
 visible = false
 position = Vector2( -3, 0 )
 enabled = true
-cast_to = Vector2( 0, -16 )
+cast_to = Vector2( 0, -12 )
 collision_mask = 48
 
 [node name="WindUp" type="Node2D" parent="PlayerStateMachine"]
