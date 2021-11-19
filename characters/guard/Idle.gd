@@ -32,7 +32,7 @@ func physics_process(delta : float) -> void:
 	
 
 func heardNoise(position : Vector2) -> void:
-	fsm.change_state("Patrol", { "noisePosition" : position })
+	fsm.change_state("Investigate", { "noisePosition" : position })
 	
 
 func _on_Timer_timeout() -> void:

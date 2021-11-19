@@ -1,7 +1,5 @@
 extends GuardState
 
-const WALL_DETECT_DISTANCE := 6
-const EDGE_DETECT_OFFSET := 5
 const PATROL_TIME_MIN := 2.0
 const PATROL_TIME_MAX := 4.0
 
@@ -59,7 +57,7 @@ func physics_process(delta : float) -> void:
 	
 	
 func heardNoise(position : Vector2) -> void:
-	fsm.change_state("Patrol", { "noisePosition" : position })
+	fsm.change_state("Investigate", { "noisePosition" : position })
 	
 	
 func handleFacing(facingDir : int) -> void:

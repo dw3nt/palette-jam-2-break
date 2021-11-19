@@ -13,6 +13,9 @@ const GRAVITY := 10.0
 const LERP_THRESHOLD := 0.01
 const PLAYER_DETECT_DISTANCE := 50
 
+const WALL_DETECT_DISTANCE := 6
+const EDGE_DETECT_OFFSET := 5
+
 var fsm : GuardStateMachine
 
 

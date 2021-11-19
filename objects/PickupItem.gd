@@ -11,7 +11,7 @@ const AIR_FRICTION := 0.05
 const THROW_FORCE := 150.0
 const MOVE_THRESHOLD := 0.05
 
-export(float) var soundMagnitude := 128.0
+export(float) var soundMagnitude := 512.0
 
 var velocity = Vector2.ZERO
 var isThrown : bool = false

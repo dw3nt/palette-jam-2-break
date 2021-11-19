@@ -44,7 +44,7 @@ func detectedSound(sound : Sound) -> void:
 				startPos = intersection.position
 			else:	# ray only looks for wall and guard_listen layers
 				remainingDistance = 0.0
-				stateWrap.state.heardNoise(intersection.position)
+				stateWrap.state.heardNoise(sound.position)
 			
 		firstIteration = false
 
