@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/images/characters/guard.png" type="Texture" id=1]
 [ext_resource path="res://characters/guard/Guard.gd" type="Script" id=2]
@@ -162,9 +162,15 @@ tracks/0/keys = {
 "values": [ 11, 12, 13, 14, 15 ]
 }
 
+[sub_resource type="CircleShape2D" id=14]
+radius = 96.0
+
 [sub_resource type="CapsuleShape2D" id=13]
 radius = 6.0
 height = 12.0
+
+[sub_resource type="CircleShape2D" id=15]
+radius = 40.0
 
 [node name="Guard" type="KinematicBody2D"]
 collision_layer = 8
@@ -179,6 +185,7 @@ hframes = 16
 visible = false
 position = Vector2( 0, -28 )
 frames = SubResource( 8 )
+frame = 2
 playing = true
 
 [node name="ExclaimationSprite" type="Sprite" parent="."]
@@ -187,6 +194,7 @@ position = Vector2( 0, -32 )
 texture = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, -10 )
 shape = SubResource( 1 )
 
@@ -199,7 +207,18 @@ anims/idle = SubResource( 3 )
 anims/run = SubResource( 4 )
 anims/stun = SubResource( 7 )
 
+[node name="LineOfSightPosition" type="Position2D" parent="."]
+position = Vector2( 0, -15 )
+
+[node name="VisionRangeDetect" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionRangeDetect"]
+shape = SubResource( 14 )
+
 [node name="HurtDetect" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -213,17 +232,13 @@ animationPlayerPath = NodePath("../AnimationPlayer")
 spritePath = NodePath("../Sprite")
 exclaimationSpritePath = NodePath("../ExclaimationSprite")
 stunSparksSpritePath = NodePath("../StunSparksSprite")
+lineOfSightPosPath = NodePath("../LineOfSightPosition")
 
 [node name="Idle" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 4 )
 
 [node name="Timer" type="Timer" parent="GuardStateMachine/Idle"]
 one_shot = true
-
-[node name="PlayerDetect" type="RayCast2D" parent="GuardStateMachine/Idle"]
-position = Vector2( 0, -4 )
-cast_to = Vector2( 50, 0 )
-collision_mask = 17
 
 [node name="Patrol" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 5 )
@@ -246,11 +261,6 @@ position = Vector2( 0, -4 )
 cast_to = Vector2( 6, 0 )
 collision_mask = 16
 
-[node name="PlayerDetect" type="RayCast2D" parent="GuardStateMachine/Patrol"]
-position = Vector2( 0, -4 )
-cast_to = Vector2( 50, 0 )
-collision_mask = 17
-
 [node name="Fall" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 6 )
 
@@ -260,10 +270,12 @@ script = ExtResource( 9 )
 [node name="Chase" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 7 )
 
-[node name="TargetSightDetect" type="RayCast2D" parent="GuardStateMachine/Chase"]
-position = Vector2( 0, -16 )
-cast_to = Vector2( 0, 1 )
-collision_mask = 16
+[node name="ChaseableRangeDetect" type="Area2D" parent="GuardStateMachine/Chase"]
+position = Vector2( 0, -8 )
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GuardStateMachine/Chase/ChaseableRangeDetect"]
+shape = SubResource( 15 )
 
 [node name="Stun" type="Node2D" parent="GuardStateMachine"]
 script = ExtResource( 11 )
@@ -272,8 +284,11 @@ script = ExtResource( 11 )
 wait_time = 3.0
 one_shot = true
 
+[connection signal="area_entered" from="VisionRangeDetect" to="." method="_on_VisionRangeDetect_area_entered"]
+[connection signal="area_exited" from="VisionRangeDetect" to="." method="_on_VisionRangeDetect_area_exited"]
 [connection signal="body_entered" from="HurtDetect" to="." method="_on_HurtDetect_body_entered"]
 [connection signal="timeout" from="GuardStateMachine/Idle/Timer" to="GuardStateMachine/Idle" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/Timer" to="GuardStateMachine/Patrol" method="_on_Timer_timeout"]
 [connection signal="timeout" from="GuardStateMachine/Patrol/EdgeDetect/EdgeTimer" to="GuardStateMachine/Patrol" method="_on_EdgeTimer_timeout"]
+[connection signal="body_exited" from="GuardStateMachine/Chase/ChaseableRangeDetect" to="GuardStateMachine/Chase" method="_on_ChaseableRangeDetect_body_exited"]
 [connection signal="timeout" from="GuardStateMachine/Stun/Timer" to="GuardStateMachine/Stun" method="_on_Timer_timeout"]

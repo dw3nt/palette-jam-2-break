@@ -32,3 +32,12 @@ func _on_HurtDetect_body_entered(body : PickUpItem) -> void:
 		
 	if body.isThrown:
 		stateWrap.change_state("Stun")
+
+
+func _on_VisionRangeDetect_area_entered(area : Area2D) -> void:
+	stateWrap.chaseTarget = area.get_parent()
+
+
+func _on_VisionRangeDetect_area_exited(area : Area2D) -> void:
+	stateWrap.chaseTarget = null
+	

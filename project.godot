@@ -249,6 +249,7 @@ aim_down={
 2d_physics/layer_5="wall"
 2d_physics/layer_6="lock"
 2d_physics/layer_7="guard_edge"
+2d_physics/layer_8="player_sight"
 
 [rendering]
 

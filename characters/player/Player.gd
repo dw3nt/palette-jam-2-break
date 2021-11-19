@@ -1,12 +1,18 @@
 extends KinematicBody2D
 class_name Player
 
+const SIGHT_DETECT_STAND : = Vector2(0, -6)
+const SIGHT_DETECT_CROUCH : = Vector2.ZERO
+
 var pickupItems : Dictionary = {}
 var closestItem = null
 var heldItem = null
 
+var isCrouched : bool = false
+
 onready var sprite = $Sprite as Sprite
 onready var stateWrap = $PlayerStateMachine as PlayerStateMachine
+onready var sightDetect = $SightDetect as Area2D
 
 
 func _ready() -> void:
@@ -41,6 +47,10 @@ func _physics_process(delta) -> void:
 	
 	for index in get_slide_count():
 		stateWrap.state.handle_collision(get_slide_collision(index))
+		
+		
+func setIsCrouched(val : bool) -> void:
+	isCrouched = val
 		
 		
 func turnAround() -> void:
