@@ -75,3 +75,4 @@ func exit_state() -> void:
 	fsm.questionSprite.visible = false
 	wallDetect.enabled = false
 	edgeDetect.enabled = false
+	searchTimer.stop()
