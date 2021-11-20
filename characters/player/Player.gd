@@ -108,5 +108,7 @@ func pickUpItem() -> void:
 func dropItem() -> void:
 	if heldItem:
 		heldItem.isHeld = false
-		heldItem.throw(Vector2(1.0, 1.0).normalized(), 0.5)
+		var facing = -1 if sprite.flip_h else 1
+		heldItem.throw(Vector2(facing, 1.0).normalized(), 0.5)
+		heldItem.isThrown = false
 		heldItem = null
