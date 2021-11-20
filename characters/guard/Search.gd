@@ -27,12 +27,12 @@ func enter_state(params : Dictionary = {}) -> void:
 	handleFacing(moveDir)
 	
 	
-func physics_process(delta : float) -> void:
-	if edgeDetect.is_colliding() || wallDetect.is_colliding():
-		moveDir *= -1
-		handleFacing(moveDir)
-		
+func physics_process(delta : float) -> void:	
 	if moveDir != 0:
+		if edgeDetect.is_colliding() || wallDetect.is_colliding():
+			moveDir *= -1
+			handleFacing(moveDir)
+		
 		fsm.velocity.x = moveDir * PATROL_SPEED
 	else:
 		slideToHalt()
@@ -69,6 +69,9 @@ func _on_SearchTime_timeout() -> void:
 
 func _on_GiveUpTimer_timeout() -> void:
 	fsm.change_state("Idle")
+	
+	
+func exit_state() -> void:
 	fsm.questionSprite.visible = false
 	wallDetect.enabled = false
 	edgeDetect.enabled = false

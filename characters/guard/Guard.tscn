@@ -191,7 +191,7 @@ hframes = 16
 visible = false
 position = Vector2( 0, -28 )
 frames = SubResource( 8 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="ExclaimationSprite" type="Sprite" parent="."]
