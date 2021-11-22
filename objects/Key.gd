@@ -1,4 +1,4 @@
-extends "res://objects/PickupItem.gd"
+extends PickUpItem
 class_name Key
 
 var floatRanges := [-1.0, 1.0]
@@ -25,3 +25,7 @@ func _on_Tween_tween_all_completed() -> void:
 func disableDetect() -> void:
 	.disableDetect()
 	tween.stop_all()
+
+
+func _on_LockDetect_area_entered(area) -> void:
+	shouldMakeNoise = false

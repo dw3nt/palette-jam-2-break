@@ -18,6 +18,7 @@ export(float) var soundMagnitude := 64.0
 var velocity = Vector2.ZERO
 var isThrown : bool = false
 var isHeld : bool = false
+var shouldMakeNoise : bool = true
 
 onready var sprite = $Sprite as Sprite
 onready var pickUpDetect = $PickUpDetect as Area2D
@@ -29,6 +30,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta : float) -> void:
+	var hasMadeNoise = false
+	
 	if !is_on_floor():
 		velocity.y += GRAVITY
 		velocity.x = lerp(velocity.x, 0.0, AIR_FRICTION)
@@ -38,18 +41,18 @@ func _physics_process(delta : float) -> void:
 		
 	move_and_slide(velocity, Vector2.UP)
 	if isThrown:
-		var hasMadeNoise = false
 		for index in get_slide_count():
 			var collision = get_slide_collision(index)
-			if collision.collider.is_in_group("block_vision") && !hasMadeNoise:
+			if collision.collider.is_in_group("block_vision") && !hasMadeNoise && shouldMakeNoise:
 				emit_signal("sound_requested", self, soundMagnitude)
 				spawnBrokenParticle()
 				hasMadeNoise = true
 				
 	if is_on_ceiling():
 		if isThrown:
-			emit_signal("sound_requested", self, soundMagnitude)
-			spawnBrokenParticle()
+			if !hasMadeNoise && shouldMakeNoise:
+				emit_signal("sound_requested", self, soundMagnitude)
+				spawnBrokenParticle()
 		velocity.y = GRAVITY
 	
 	if abs(velocity.x) < MOVE_THRESHOLD:
