@@ -3,6 +3,8 @@ class_name PickUpItem
 
 signal sound_requested(item, mag)
 
+const BROKEN_ITEM_SCENE = preload("res://effects/BrokenItem.tscn")
+
 const THROW_MAGNITUDE_THRESHOLD := 10.0
 const COLLIDER_Y_DIFF := 25.0
 const GRAVITY := 6.0
@@ -11,7 +13,7 @@ const AIR_FRICTION := 0.05
 const THROW_FORCE := 150.0
 const MOVE_THRESHOLD := 0.05
 
-export(float) var soundMagnitude := 512.0
+export(float) var soundMagnitude := 64.0
 
 var velocity = Vector2.ZERO
 var isThrown : bool = false
@@ -36,14 +38,18 @@ func _physics_process(delta : float) -> void:
 		
 	move_and_slide(velocity, Vector2.UP)
 	if isThrown:
+		var hasMadeNoise = false
 		for index in get_slide_count():
 			var collision = get_slide_collision(index)
-			if collision.collider.is_in_group("block_vision"):
+			if collision.collider.is_in_group("block_vision") && !hasMadeNoise:
 				emit_signal("sound_requested", self, soundMagnitude)
+				spawnBrokenParticle()
+				hasMadeNoise = true
 				
 	if is_on_ceiling():
 		if isThrown:
 			emit_signal("sound_requested", self, soundMagnitude)
+			spawnBrokenParticle()
 		velocity.y = GRAVITY
 	
 	if abs(velocity.x) < MOVE_THRESHOLD:
@@ -51,6 +57,13 @@ func _physics_process(delta : float) -> void:
 		
 	if isThrown && is_on_floor():
 		isThrown = false
+		
+		
+func spawnBrokenParticle() -> void:
+	var inst = BROKEN_ITEM_SCENE.instance()
+	inst.global_position = global_position
+	get_parent().add_child(inst)
+	queue_free()
 	
 	
 func throw(throwDir : Vector2, throwScale : float) -> void:
